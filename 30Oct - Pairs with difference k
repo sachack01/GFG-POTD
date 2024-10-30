@@ -1,0 +1,80 @@
+Date: 30/10/2024
+Pairs with difference k
+
+Difficulty: Easy
+
+Problem:
+
+Given an array arr[] of positive integers. Find the number of pairs of integers whose difference equals a given number k.
+Note: (a, b) and (b, a) are considered the same. Also, the same numbers at different indices are considered different.
+
+Examples:
+
+Input: arr[] = [1, 5, 3, 4, 2], k = 3
+Output: 2
+Explanation: There are 2 pairs with difference 3,the pairs are {1, 4} and {5, 2} 
+Input: arr[] = [8, 12, 16, 4, 0, 20], k = 4
+Output: 5
+Explanation: There are 5 pairs with difference 4, the pairs are {0, 4}, {4, 8}, {8, 12}, {12, 16} and {16, 20}.
+Constraints:
+1 <= arr.size() <= 106
+1 <= k <= 106
+1 <= arri <= 106
+
+Expected Complexities:
+Time Complexity: O(n) | Auxiliary Space: O(n)
+
+
+Code:
+
+/*
+
+//Naive Solution of TC of N^2, TLE error(brute force)
+
+class Solution {
+  public:
+    // Returns count of pairs with difference k
+    int countPairsWithDiffK(vector<int>& arr, int k) {
+        // code here
+        
+        int n = arr.size();
+        int count=0;
+        //unordered_map<int,int>map;
+        for(int i=0; i<n; i++)
+        {
+            for(int j=0; j<n; j++)
+            {
+                if(abs(arr[i]-arr[j])==k)
+                {
+                    count++;
+                }
+            }
+        }
+        return count/2;
+    }
+};
+
+*/
+
+// Using Map/Hashing
+
+class Solution {
+  public:
+    /* Returns count of pairs with difference k  */
+    int countPairsWithDiffK(vector<int>& arr, int k) {
+        // code here
+        
+        int n = arr.size();
+        int count=0;
+        unordered_map<int,int>map;
+        for(int i=0; i<n; i++)
+        {
+            map[arr[i]]++;
+        }
+        for(int i=0; i<n; i++)
+        {
+            count += map[k+arr[i]];     // here we are using index of map to count the pairs of diff
+        }
+        return count;   // only return 'count' cause we only check one pair here through map, not both.
+    }
+};
