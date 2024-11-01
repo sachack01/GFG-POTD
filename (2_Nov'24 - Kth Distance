@@ -1,0 +1,49 @@
+Date: 02/11/2024
+
+Kth Distance
+
+Difficulty: Easy
+
+Problem:
+
+Given an unsorted array arr. Also given the number k which is smaller than the size of array. Find if the array contains duplicates within k distance.
+
+Examples:
+
+Input: arr[] = [1, 2, 3, 4, 1, 2, 3, 4] and k = 3
+Output: false
+Explanation: All duplicates are more than k distance away.
+Input: arr[] = [1, 2, 3, 1, 4, 5] and k = 3
+Output: true
+Explanation: 1 is repeated at distance 3.
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(n)
+
+Code:
+
+class Solution {
+  public:
+
+    bool checkDuplicatesWithinK(vector<int>& arr, int k) {
+        // your code
+        // using map for storing last index of each number
+        unordered_map<int,int>lastIndex;
+        for(int i=0; i<arr.size(); i++)
+        {
+            //If number is already in map and its last occurrence is within k distance
+            if(lastIndex.find(arr[i]) != lastIndex.end() && i-lastIndex[arr[i]] <= k)
+            {
+                return true;
+            }
+            // Update the last index of current number
+            lastIndex[arr[i]] = i;
+        }
+        return false;
+    }
+};
+
+// Time Complexity: O(n)
+// Space Complexity: O(n)
+
+// but sliding window approach is better, it has less space complexity i.e. O(k)
+// check claude for same
