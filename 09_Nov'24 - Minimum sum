@@ -1,0 +1,115 @@
+Date: 09/11/2024
+---------------------------------------------------------------------
+Minimum sum
+---------------------------------------------------------------------
+Difficulty: Medium
+---------------------------------------------------------------------
+Problem:
+
+Given an array arr[] such that each element is in the range [0 - 9], find the minimum possible sum of two numbers formed using the elements of the array. All digits in the given array must be used to form the two numbers. Return a string without leading zeroes.
+
+Examples :
+
+Input: arr[] = [6, 8, 4, 5, 2, 3]
+Output: 604
+Explanation: The minimum sum is formed by numbers 358 and 246.
+Input: arr[] = [5, 3, 0, 7, 4]
+Output: 82
+Explanation: The minimum sum is formed by numbers 35 and 047.
+Input: arr[] = [9, 4]
+Output: 13
+Explanation: The minimum sum is formed by numbers 9 and 4.
+Constraints:
+1 ≤ arr.size() ≤ 106
+0 ≤ arr[i] ≤ 9
+
+---------------------------------------------------------------------
+
+Time Complexity: O(n log n)  |  Auxiliary Space: O(n)
+
+---------------------------------------------------------------------
+Code:
+
+class Solution {
+  public:
+    string minSum(vector<int> &arr) {
+        // code here
+        
+        // here in question they are saying to form two numbers from the given elements
+        // of the array in such a way that it must be smallest to give result sum smallest 
+        // of all possible combinations
+        
+        // for example 1 we have 6 elements so we can for any two numbers like
+        // 6 and 84523, but it won't give minimum sum
+        // for it must have 3 elements in num1 and 3 elements in num2
+        // or if elements are seven then one number is of 4 and other is of 3
+        
+        // so now we need to pick first element smallest for num1 and num2 and viceversa
+        // that's why we first sort our array
+        // and using string for adding any large numbers efficiently
+        
+        string num1, num2;
+        sort(arr.begin(), arr.end());   // sort to get smaller numbers first to make smallest element
+        for(int i=0; i<arr.size(); i++)
+        {
+            if(i%2==0)  // if index is even add it to num1 else num2
+            {
+                num1 += to_string(arr[i]);
+            }
+            else
+            {
+                num2 += to_string(arr[i]);
+            }
+        }
+        
+        // while doing addition we are adding from right, so to make it easy we reverse both strings
+        // to add easily from left one by one of string num1 and num2
+        // (or try in notebook for given test cases to get it)
+        
+        reverse(num1.begin(), num1.end());
+        reverse(num2.begin(), num2.end());
+        
+        int i=0, j=0;
+        int carry=0;
+        string ans;
+        
+        // here we are checking with OR for both numbers, so incase if i=4 or j=3, in that case
+        // it will take garbage value of j and add it to our sum
+        // so for avoiding it, we are using if statement solely for i and j
+        
+        while(i<num1.size() || j<num2.size())
+        {
+            int sum=0;
+            if(i<num1.size())
+            {
+                sum += (num1[i++]-'0');
+            }
+            if(j<num2.size())
+            {
+                sum += (num2[j++]-'0');
+            }
+            
+            sum += carry;
+            carry = sum/10;
+            sum = sum%10;
+            ans += to_string(sum);  // changing integer sum to string for adding it to string 'ans'
+            
+            
+        }
+        // add if extra carry was there
+        ans += to_string(carry);
+        
+        // removing trailing zeroes
+        while(ans.back() == '0') ans.pop_back();
+        
+        reverse(ans.begin(), ans.end());
+        
+        // here return ans; works cause here we must have some elements in array
+        // but what if only had to add two numbers with both values 0 or empty
+        // so, instead of returning return ans; directly use below form to handle empty case
+        
+        // return ans.empty() ? "0" : ans;
+        
+        return ans;
+    }
+};
