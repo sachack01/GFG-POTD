@@ -1,0 +1,96 @@
+Date: 10/11/2024
+----------------------------------------------------
+Union of Two Sorted Arrays with Distinct Elements
+----------------------------------------------------
+Difficulty: Easy
+----------------------------------------------------
+Problem:
+Given two sorted arrays a[] and b[], where each array contains distinct elements, the task is to return the elements in the union of the two arrays in sorted order.
+
+Union of two arrays can be defined as the set containing distinct common elements that are present in either of the arrays.
+Examples:
+
+Input: a[] = [1, 2, 3, 4, 5], b[] = [1, 2, 3, 6, 7]
+Output: 1 2 3 4 5 6 7
+Explanation: Distinct elements including both the arrays are: 1 2 3 4 5 6 7.
+Input: a[] = [2, 3, 4, 5], b[] = [1, 2, 3, 4]
+Output: 1 2 3 4 5
+Explanation: Distinct elements including both the arrays are: 1 2 3 4 5.
+Input: a[] = [1], b[] = [2]
+Output: 1 2
+Explanation: Distinct elements including both the arrays are: 1 2.
+Constraints:
+1  <=  a.size(), b.size()  <=  105
+-109  <=  a[i] , b[i]  <=  109
+
+----------------------------------------------------
+
+Time Complexity:
+O(n + m)  |  Auxiliary Space: O(n + m)
+
+----------------------------------------------------
+
+Code:
+
+class Solution {
+  public:
+    // a,b : the arrays
+    // Function to return a list containing the union of the two arrays.
+    vector<int> findUnion(vector<int> &a, vector<int> &b) {
+        // Your code here
+        // return vector with correct order of elements
+        unordered_map<int,int>freq;
+        vector<int> ans;
+        vector<int> res;
+        
+        for(int i=0; i<a.size(); i++)
+        {
+            ans.push_back(a[i]);
+        }
+        for(int i=0; i<b.size(); i++)
+        {
+            ans.push_back(b[i]);
+        }
+        for(int num:ans)
+        {
+            freq[num]++;
+        }
+        for (int i = 0; i < ans.size(); i++) {
+            if (freq[ans[i]] > 0)
+            {
+                res.push_back(ans[i]);
+                freq[ans[i]] = 0; // Mark as processed to avoid duplicates
+            }
+        }
+        sort(res.begin(),res.end());
+        return res;
+    }
+};
+/*
+class Solution {
+  public:
+    // Function to return a vector containing the union of the two arrays.
+    vector<int> findUnion(vector<int> &a, vector<int> &b) {
+        // Using an unordered set to store unique elements
+        unordered_set<int> unique_elements;
+        
+        // Insert elements of the first array into the set
+        for(int num : a) {
+            unique_elements.insert(num);
+        }
+        
+        // Insert elements of the second array into the set
+        for(int num : b) {
+            unique_elements.insert(num);
+        }
+        
+        // Copy elements from the set to a result vector
+        vector<int> ans(unique_elements.begin(), unique_elements.end());
+        
+        // Sort the result vector to maintain order
+        sort(ans.begin(), ans.end());
+        
+        return ans;
+    }
+};
+*/
